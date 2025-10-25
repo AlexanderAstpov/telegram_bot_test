@@ -8,12 +8,18 @@ BTN_PLAY = "🥎 Поиграть"
 BTN_SLEEP = "💤 Спать"
 BNT_STATUS = "📊 Статус"
 BTN_EXIT = "⭕ Выход"
+BTN_FRIEND = "❤ friendliness"
+BTN_BALL_GAME = "⚽⚾🥎Поиграть в мяч"
+BTN_PUZZLE = "🧩 Пазл"
+BTN_WORKOUT = "🎯 Тренировка"
+BTN_REST = "🛌 Отдохнуть"
+BTN_OUT = "🔄 Отмена / Назад"
 
 main_kb = types.ReplyKeyboardMarkup(
     keyboard=[
         [types.KeyboardButton(text=BTN_FEED), types.KeyboardButton(text=BTN_PLAY)],
         [types.KeyboardButton(text=BTN_SLEEP), types.KeyboardButton(text=BNT_STATUS)],
-        [types.KeyboardButton(text=BTN_EXIT)]
+        [types.KeyboardButton(text=BTN_FRIEND), types.KeyboardButton(text=BTN_EXIT)]
     ],
     resize_keyboard=True
     
@@ -29,4 +35,15 @@ food_kb = types.InlineKeyboardMarkup(
         ],
         [types.InlineKeyboardButton(text="🥃 Виски", callback_data="Wisky")]
     ]
+)
+
+
+activity_kb = types.ReplyKeyboardMarkup(
+    keyboard=[
+        [types.KeyboardButton(text=BTN_BALL_GAME), types.KeyboardButton(text=BTN_PUZZLE)],
+        [types.KeyboardButton(text=BTN_WORKOUT), types.KeyboardButton(text=BTN_REST)],
+        [types.KeyboardButton(text=BTN_OUT)]
+       
+    ],
+    resize_keyboard=True
 )

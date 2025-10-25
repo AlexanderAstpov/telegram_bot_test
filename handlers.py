@@ -4,11 +4,13 @@ from aiogram.filters import Command
 from keyboards import (
     main_kb, 
     food_kb,
+    activity_kb,
     BNT_STATUS, 
     BTN_EXIT, 
     BTN_FEED, 
     BTN_PLAY, 
-    BTN_SLEEP
+    BTN_SLEEP,
+    BTN_FRIEND
     )
 
 
@@ -23,6 +25,7 @@ async def register_handlers(dp: Dispatcher):
     dp.message.register(play_pet, F.text == BTN_PLAY)
     dp.message.register(feed_pet, F.text == BTN_FEED)
     dp.message.register(status_pet, F.text == BNT_STATUS)
+    dp.message.register(friend_pet, F.text == BTN_FRIEND)
    
 
 
@@ -32,10 +35,12 @@ async def start_handler(message: types.Message):
     
     if user_id not in pets:
         new_pet = {
-            "name": "Pepsik 🐱‍🚀",
+            "name": "Wisky 🥃",
             "hunger": 50,
             "energy": 50,
             "happiness": 50,
+            "friendliness": 50,
+            
         }
         pets[user_id] = new_pet
     
@@ -45,6 +50,17 @@ async def start_handler(message: types.Message):
         f"Позаботься о нём!",
         reply_markup=main_kb
     )
+
+
+async def friend_pet(message: types.Message):
+    user_id = message.from_user.id
+    if user_id not in pets:
+        await message.answer("Сначала запусти бота с помощью команды /start")
+        return
+    pet = pets[user_id]
+    pet["friendliness"] = min(pet["friendliness"] + 10, 100)
+    await message.answer(f"{pet['name']} принес вам игрушку 🦴😀!", reply_markup=activity_kb)
+
 
 
 async def play_pet(message: types.Message):
@@ -84,11 +100,13 @@ async def status_pet(message: types.Message):
     hun = pet['hunger']
     en = pet['energy']
     hap = pet['happiness']
+    fre = pet['friendliness']
     
     status = (
         f"Статус вашего питомца {pet['name']}:\n"
         f"Сытость: {hun}% {progress_bar(hun, 10)}\n"
         f"Энергия: {en}% {progress_bar(en, 10)}\n"
         f"Счастье: {hap}% {progress_bar(hap, 10)}\n"
+        f"Дружелюбие: {fre}% {progress_bar(fre, 10)}\n"
     )
     await message.answer(status)

@@ -14,11 +14,14 @@ async def decrease_params():
         hun = pet['hunger'] + dpar['hunger']
         en = pet['energy'] + dpar['energy']
         hap = pet['happiness'] + dpar['happiness']
-
+        fre = pet['friendliness'] + dpar['friendliness']
+        
         hun = max(min(hun, 100), 0)
         en = max(min(en, 100), 0)
         hap = max(min(hap, 100), 0)
+        fre = max(min(fre, 100), 0)
 
         pet['hunger'] = hun
         pet['energy'] = en
         pet['happiness'] = hap
+        pet['friendliness'] = fre
