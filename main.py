@@ -5,11 +5,15 @@ import asyncio
 from config import BOT_TOKEN
 from handlers import register_handlers
 from scheduler import stert_scheduler
+from db import init_db
 
 
 
     
 async def main():
+
+    print("Инициализируем дазу данных")
+    await init_db()
 
     stert_scheduler()
     print("Фоновые задачи запущены")
