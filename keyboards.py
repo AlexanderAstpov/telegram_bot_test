@@ -30,10 +30,10 @@ remove_kb = types.ReplyKeyboardRemove() # метод отвечающий за �
 food_kb = types.InlineKeyboardMarkup(
     inline_keyboard= [
         [
-            types.InlineKeyboardButton(text="🥩 Стейк", callback_data="steak"), 
-            types.InlineKeyboardButton(text="🍤 Креветки", callback_data="prawns")
+            types.InlineKeyboardButton(text="🥩 Стейк", callback_data="feed_steak"), 
+            types.InlineKeyboardButton(text="🍤 Креветки", callback_data="feed_prawns")
         ],
-        [types.InlineKeyboardButton(text="🥃 Виски", callback_data="Wisky")]
+        [types.InlineKeyboardButton(text="🥃 Виски", callback_data="feed_Wisky")]
     ]
 )
 
