@@ -43,4 +43,39 @@ async def get_pet(user_id: int):
                 "happiness" : pet[3],
                 "energy" : pet[4]
             }
+        
 
+async def get_pets_list():
+    async with aiosqlite.connect(DB_NAME) as db: 
+        async with db.execute("SELECT * FROM pets") as cursor:
+            pets = await cursor.fetchall()
+            if not pets:
+                return None
+            pets_list = []
+            for pet in pets:
+                pets_list.append(
+                    {
+                    "user_id" : pet[0],
+                    "name" : pet[1],
+                    "hunger" : pet[2],
+                    "happiness" : pet[3],
+                    "energy" : pet[4]  
+                    }
+                )
+            return pets_list
+                
+
+async def update_pet(
+    user_id,
+    name,
+    hunger,
+    happiness,
+    energy
+):
+    async with aiosqlite.connect(DB_NAME) as db: 
+        await db.execute("""
+            UPDATE pets SET name=?, hunger=?, happiness=?, energy=? WHERE user_id=?
+        """,
+            (name, hunger, happiness, energy, user_id)
+        )
+        await db.commit()
