@@ -26,7 +26,7 @@ async def register_handlers(dp: Dispatcher):
     dp.message.register(feed_pet, F.text == BTN_FEED)
     dp.message.register(status_pet, F.text == BNT_STATUS)
     dp.callback_query.register(food_callback_handler, lambda c: c.data.startswith("feed_"))
-    dp.callback_query.register(friend_callback_handler, lambda c: c.data.startswith("_game"))
+    dp.callback_query.register(friend_callback_handler, lambda c: c.data.startswith("game_"))
    
 
 
@@ -154,8 +154,8 @@ async def food_callback_handler(callback: types.CallbackQuery):
         name=pet["name"],
         hunger=pet["hunger"],
         happiness=pet["happiness"],
-        energy=pet["energy"],
-        friendliness=pet["friendliness"]
+        energy=pet["energy"]
+        # friendliness=pet["friendliness"]
     )
 
     await callback.message.edit_text(message)
@@ -175,26 +175,26 @@ async def friend_callback_handler(callback: types.CallbackQuery):
     message = ""
     fr = pet["happiness"]
 
-    if friend == "ball_game":
+    if friend == "game_ball":
         fr = pet["happiness"] + 20
         pet["energy"] = min(pet["energy"] - 5, 0)
         message = f"вы поиграли с {pet['name']} в мяч"
 
-    elif friend == "puzzle_game":
+    elif friend == "game_puzzle":
         fr = pet["happiness"] + 10
         pet["energy"] = min(pet["energy"] - 10, 0)
         message = f"вы с {pet['name']} собрали пазл!"
 
     
 
-    pet["happiness"] = max(100, fr)
+    pet["happiness"] = min(100, fr)
 
     await update_pet(
         user_id=user_id,
         name=pet["name"],
         hunger=pet["hunger"],
         happiness=pet["happiness"],
-        energy=pet["energy"],
+        energy=pet["energy"]
         # friendliness=pet["friendliness"]
     )
 
