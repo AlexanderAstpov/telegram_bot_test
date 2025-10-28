@@ -36,4 +36,6 @@ async def decrease_params():
             hunger=pet["hunger"],
             happiness=pet["happiness"],
             energy=pet["energy"]
+            # friendliness=pet["friendliness"]
+
         )

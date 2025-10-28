@@ -4,7 +4,7 @@ from aiogram.filters import Command
 from keyboards import (
     main_kb, 
     food_kb,
-    # activity_kb,
+    activity_kb,
     BNT_STATUS, 
     BTN_EXIT, 
     BTN_FEED, 
@@ -25,8 +25,8 @@ async def register_handlers(dp: Dispatcher):
     dp.message.register(play_pet, F.text == BTN_PLAY)
     dp.message.register(feed_pet, F.text == BTN_FEED)
     dp.message.register(status_pet, F.text == BNT_STATUS)
-    # dp.message.register(friend_pet, F.text == BTN_FRIEND)
     dp.callback_query.register(food_callback_handler, lambda c: c.data.startswith("feed_"))
+    dp.callback_query.register(friend_callback_handler, lambda c: c.data.startswith("_game"))
    
 
 
@@ -47,21 +47,24 @@ async def start_handler(message: types.Message):
     )
 
 
-# async def friend_pet(message: types.Message):
-#     user_id = message.from_user.id
-#     pet = await get_pet(user_id)
-#     if not pet:
-#         await message.answer("Сначала запусти бота с помощью команды /start")
-#         return
-#     pet["friendliness"] = min(pet["friendliness"] + 10, 100)
-#     await update_pet(
-#         user_id=user_id,
-#         name=pet["name"],
-#         hunger=pet["hunger"],
-#         happiness=pet["happiness"],
-#         energy=pet["energy"]   
-#     )
-#     await message.answer(f"{pet['name']} принес вам игрушку 🦴😀!")
+async def friend_pet(message: types.Message):
+    user_id = message.from_user.id
+    pet = await get_pet(user_id)
+    if not pet:
+        await message.answer("Сначала запусти бота с помощью команды /start")
+        return
+    # pet["friendliness"] = min(pet["friendliness"] + 10, 100)
+    # await update_pet(
+    #     user_id=user_id,
+    #     name=pet["name"],
+    #     hunger=pet["hunger"],
+    #     happiness=pet["happiness"],
+    #     energy=pet["energy"]   
+    # )
+    await message.answer(
+        f"{pet['name']} принес вам игрушку 🦴😀!",
+        reply_markup=activity_kb
+        )
 
 
 
@@ -79,7 +82,9 @@ async def play_pet(message: types.Message):
         name=pet["name"],
         hunger=pet["hunger"],
         happiness=pet["happiness"],
-        energy=pet["energy"]
+        energy=pet["energy"],
+        # friendliness=pet["friendliness"]
+
     )
     await message.answer(f"{pet['name']} весело поиграл!")
 
@@ -149,12 +154,52 @@ async def food_callback_handler(callback: types.CallbackQuery):
         name=pet["name"],
         hunger=pet["hunger"],
         happiness=pet["happiness"],
-        energy=pet["energy"]
+        energy=pet["energy"],
+        friendliness=pet["friendliness"]
     )
 
     await callback.message.edit_text(message)
     await callback.answer(
-        f"Ссытость {pet['name']} -- {pet["hunger"]}/100 \n"
+        f"Ссытость {pet['name']} -- {pet['hunger']}/100 \n"
         f"{progress_bar(pet['hunger'], 10)}"
         )
 
+
+async def friend_callback_handler(callback: types.CallbackQuery):
+    user_id = callback.from_user.id
+    pet = await get_pet(user_id)
+    if not pet:
+        await callback.message.edit_text("Сначала запусти бота с помощью команды /start")
+        return
+    friend = callback.data
+    message = ""
+    fr = pet["happiness"]
+
+    if friend == "ball_game":
+        fr = pet["happiness"] + 20
+        pet["energy"] = min(pet["energy"] - 5, 0)
+        message = f"вы поиграли с {pet['name']} в мяч"
+
+    elif friend == "puzzle_game":
+        fr = pet["happiness"] + 10
+        pet["energy"] = min(pet["energy"] - 10, 0)
+        message = f"вы с {pet['name']} собрали пазл!"
+
+    
+
+    pet["happiness"] = max(100, fr)
+
+    await update_pet(
+        user_id=user_id,
+        name=pet["name"],
+        hunger=pet["hunger"],
+        happiness=pet["happiness"],
+        energy=pet["energy"],
+        # friendliness=pet["friendliness"]
+    )
+
+    await callback.message.edit_text(message)
+    await callback.answer(
+        f"Дружелюбие {pet['name']} -- {pet['happiness']}/100 \n"
+        f"{progress_bar(pet['happiness'], 10)}"
+        )

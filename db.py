@@ -11,6 +11,7 @@ async def init_db():
                 hunger INTEGER,
                 happiness INTEGER,
                 energy INTEGER
+                
             )
 
             '''
@@ -23,7 +24,7 @@ async def create_pet(user_id: int, pet_name: str):
     async with aiosqlite.connect(DB_NAME) as db: 
         await db.execute(
             """
-            INSERT INTO pets (user_id, name, hunger, happiness, energy)
+            # INSERT INTO pets (user_id, name, hunger, happiness, energy,)
             VALUES (?,?,?,?,?)
             """,
             (user_id, pet_name, 50, 50, 50)
@@ -41,7 +42,8 @@ async def get_pet(user_id: int):
                 "name" : pet[1],
                 "hunger" : pet[2],
                 "happiness" : pet[3],
-                "energy" : pet[4]
+                "energy" : pet[4],
+                # "friendliness": pet[5]
             }
         
 
@@ -59,7 +61,8 @@ async def get_pets_list():
                     "name" : pet[1],
                     "hunger" : pet[2],
                     "happiness" : pet[3],
-                    "energy" : pet[4]  
+                    "energy" : pet[4],
+                    # "friendliness": pet[5] 
                     }
                 )
             return pets_list
@@ -70,7 +73,8 @@ async def update_pet(
     name,
     hunger,
     happiness,
-    energy
+    energy,
+    
 ):
     async with aiosqlite.connect(DB_NAME) as db: 
         await db.execute("""
