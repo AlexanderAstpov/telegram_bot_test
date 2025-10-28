@@ -154,7 +154,7 @@ async def food_callback_handler(callback: types.CallbackQuery):
 
     await callback.message.edit_text(message)
     await callback.answer(
-        f"Ссытость {pet['name']} -- {pet["hunger"]}/100 \n"
+        f"Ссытость {pet['name']} -- {pet['hunger']}/100 \n"
         f"{progress_bar(pet['hunger'], 10)}"
         )
 
