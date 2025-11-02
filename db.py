@@ -2,7 +2,7 @@ from config import DB_NAME
 import aiosqlite
 
 async def init_db():
-    async with aiosqlite.connect(DB_NAME) as db: # with автоматически закрывает табл послн использования
+    async with aiosqlite.connect(DB_NAME) as db: 
         await db.execute(
             '''
             CREATE TABLE IF NOT EXISTS pets (
@@ -23,7 +23,7 @@ async def create_pet(user_id: int, pet_name: str):
     async with aiosqlite.connect(DB_NAME) as db: 
         await db.execute(
             """
-            # INSERT INTO pets (user_id, name, hunger, happiness, energy,)
+            INSERT INTO pets (user_id, name, hunger, happiness, energy)
             VALUES (?,?,?,?,?)
             """,
             (user_id, pet_name, 50, 50, 50)
