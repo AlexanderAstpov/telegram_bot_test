@@ -53,14 +53,7 @@ async def friend_pet(message: types.Message):
     if not pet:
         await message.answer("Сначала запусти бота с помощью команды /start")
         return
-    # pet["friendliness"] = min(pet["friendliness"] + 10, 100)
-    # await update_pet(
-    #     user_id=user_id,
-    #     name=pet["name"],
-    #     hunger=pet["hunger"],
-    #     happiness=pet["happiness"],
-    #     energy=pet["energy"]   
-    # )
+  
     await message.answer(
         f"{pet['name']} принес вам игрушку 🦴😀!",
         reply_markup=activity_kb
@@ -83,8 +76,6 @@ async def play_pet(message: types.Message):
         hunger=pet["hunger"],
         happiness=pet["happiness"],
         energy=pet["energy"],
-        # friendliness=pet["friendliness"]
-
     )
     await message.answer(f"{pet['name']} весело поиграл!")
 
@@ -112,14 +103,12 @@ async def status_pet(message: types.Message):
     hun = pet['hunger']
     en = pet['energy']
     hap = pet['happiness']
-    # fre = pet['friendliness']
-    
+       
     status = (
         f"Статус вашего питомца {pet['name']}:\n"
         f"Сытость: {hun}% {progress_bar(hun, 10)}\n"
         f"Энергия: {en}% {progress_bar(en, 10)}\n"
         f"Счастье: {hap}% {progress_bar(hap, 10)}\n"
-        # f"Дружелюбие: {fre}% {progress_bar(fre, 10)}\n"
     )
     await message.answer(status)
 
@@ -155,7 +144,7 @@ async def food_callback_handler(callback: types.CallbackQuery):
         hunger=pet["hunger"],
         happiness=pet["happiness"],
         energy=pet["energy"]
-        # friendliness=pet["friendliness"]
+       
     )
 
     await callback.message.edit_text(message)
@@ -195,7 +184,7 @@ async def friend_callback_handler(callback: types.CallbackQuery):
         hunger=pet["hunger"],
         happiness=pet["happiness"],
         energy=pet["energy"]
-        # friendliness=pet["friendliness"]
+       
     )
 
     await callback.message.edit_text(message)
