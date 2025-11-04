@@ -85,11 +85,7 @@ async def feed_pet(message: types.Message):
         f"Чем вы хотите покормить {pet['name']}?", 
         reply_markup=food_kb
         )
-    # pet["hunger"] = min(pet["hunger"] + 10, 100)
-    # pet["energy"] = max(pet["energy"] - 5, 0)
-    # await message.answer(f"{pet['name']} вкусно покушал!")
-
-
+   
 
 async def status_pet(message: types.Message):
     user_id = message.from_user.id
@@ -139,7 +135,7 @@ async def food_callback_handler(callback: types.CallbackQuery):
 
     await callback.message.edit_text(message)
     await callback.answer(
-        f"Ссытость {pet['name']} -- {pet["hunger"]}/100 \n"
+        f"Ссытость {pet['name']} -- {pet['hunger']}/100 \n"
         f"{progress_bar(pet['hunger'], 10)}"
         )
 
