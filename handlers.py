@@ -25,6 +25,7 @@ async def register_handlers(dp: Dispatcher):
     dp.message.register(play_pet, F.text == BTN_PLAY)
     dp.message.register(feed_pet, F.text == BTN_FEED)
     dp.message.register(status_pet, F.text == BNT_STATUS)
+    dp.message.register(friend_pet, F.text == BTN_FRIEND)
     dp.callback_query.register(food_callback_handler, lambda c: c.data.startswith("feed_"))
     dp.callback_query.register(friend_callback_handler, lambda c: c.data.startswith("game_"))
    
